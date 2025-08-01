@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamAI - AI Rüya Yorumlayıcısı</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="shooting-star"></div>
+    
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-moon"></i>
+                <h1>DreamAI</h1>
+                <span class="tagline">AI Destekli Rüya Yorumlayıcısı</span>
+            </div>
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="Tema Değiştir">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Rüya Girişi Bölümü -->
+            <section class="dream-input-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-feather"></i> Rüyanızı Anlatın</h2>
+                    <p>Rüyanızı detaylı bir şekilde yazın. AI, rüyanızı analiz edip yorumlayacak.</p>
+                </div>
+                
+                <div class="dream-form">
+                    <div class="form-group">
+                        <label for="dreamTitle">Rüya Başlığı (İsteğe Bağlı):</label>
+                        <input type="text" id="dreamTitle" placeholder="Rüyanıza bir başlık verin...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dreamText">Rüyanızı Anlatın:</label>
+                        <textarea id="dreamText" placeholder="Rüyanızı buraya detaylı bir şekilde yazın..." rows="8"></textarea>
+                        <div class="char-counter">
+                            <span id="charCount">0</span> / 2000 karakter
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dreamMood">Rüya Sonrası Hissiniz:</label>
+                        <select id="dreamMood">
+                            <option value="">Seçiniz...</option>
+                            <option value="mutlu">Mutlu</option>
+                            <option value="huzurlu">Huzurlu</option>
+                            <option value="endişeli">Endişeli</option>
+                            <option value="korkmuş">Korkmuş</option>
+                            <option value="şaşkın">Şaşkın</option>
+                            <option value="üzgün">Üzgün</option>
+                            <option value="heyecanlı">Heyecanlı</option>
+                            <option value="karışık">Karışık Duygular</option>
+                        </select>
+                    </div>
+                    
+                    <button id="analyzeBtn" class="analyze-btn">
+                        <i class="fas fa-magic"></i>
+                        <span>Rüyamı Analiz Et</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Yükleme Animasyonu -->
+            <section class="loading-section" id="loadingSection" style="display: none;">
+                <div class="loading-container">
+                    <div class="crystal-ball">
+                        <div class="ball"></div>
+                        <div class="glow"></div>
+                    </div>
+                    <div id="loadingText" class="loading-text">AI rüyanızı analiz ediyor...</div>
+                    <div class="progress-bar">
+                        <div id="progressBar" class="progress"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sonuçlar Bölümü -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2><i class="fas fa-eye"></i> Rüya Analizi Tamamlandı</h2>
+                </div>
+                
+                <div class="results-grid">
+                    <!-- Genel Yorum -->
+                    <div class="result-card interpretation-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-scroll"></i> Genel Yorum</h3>
+                        </div>
+                        <div class="card-content">
+                            <p id="generalInterpretation"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Semboller -->
+                    <div class="result-card symbols-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-gem"></i> Önemli Semboller</h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="symbolsList"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Duygusal Analiz -->
+                    <div class="result-card emotions-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-heart"></i> Duygusal Analiz</h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="emotionalAnalysis"></div>
+                        </div>
+                    </div>
+                    
+
+                    
+                    <!-- Öneriler -->
+                    <div class="result-card suggestions-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-lightbulb"></i> Öneriler & Rehberlik</h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="suggestions"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Rüya Günlüğü -->
+                    <div class="result-card journal-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-book"></i> Rüya Günlüğüne Ekle</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="action-buttons">
+                    <button id="saveToJournal" class="save-btn">
+                        <i class="fas fa-save"></i>
+                        Günlüğe Kaydet
+                    </button>
+                    <button id="newAnalysisBtn" class="new-analysis-btn">
+                        <i class="fas fa-plus"></i>
+                        Yeni Analiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- Görsel Üretim Bölümü JavaScript tarafından dinamik olarak oluşturulacak -->
+                            <p class="journal-info">Bu rüya analizini kişisel rüya günlüğünüze kaydedebilirsiniz.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rüya Günlüğü Bölümü -->
+            <section class="journal-section" id="journalSection">
+                <div class="section-header">
+                    <h2><i class="fas fa-book-open"></i> Rüya Günlüğüm</h2>
+                    <button id="toggleJournal" class="toggle-btn">
+                        <i class="fas fa-eye"></i> Günlüğü Göster
+                    </button>
+                </div>
+                
+                <div class="journal-content" id="journalContent" style="display: none;">
+                    <div class="journal-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalDreams">0</span>
+                            <span class="stat-label">Toplam Rüya</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="mostCommonMood">-</span>
+                            <span class="stat-label">En Sık Duygu</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="journalStreak">0</span>
+                            <span class="stat-label">Günlük Serisi</span>
+                        </div>
+                    </div>
+                    
+                    <div class="journal-entries" id="journalEntries">
+                        <div class="empty-journal">
+                            <i class="fas fa-moon"></i>
+                            <p>Henüz rüya günlüğünüzde kayıt yok. İlk rüyanızı analiz edin!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 DreamAI. Rüyalarınızın gizli anlamlarını keşfedin.</p>
+            <div class="footer-links">
+                <a href="#">Gizlilik</a>
+                <a href="#">Kullanım Koşulları</a>
+                <a href="#">Hakkında</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
